@@ -9,6 +9,8 @@ import SwiftUI
 
 struct StartView: View {
     @Binding var isStarted: Bool
+    @AppStorage("Name") var name: String = ""
+    @State private var scaleLogo: Double = 0.9
     var body: some View {
         NavigationStack{
             ZStack{
@@ -19,18 +21,18 @@ struct StartView: View {
                                                            Color(red: 71/255, green: 159/255, blue: 154/255),
                                                            Color(red: 46/255, green: 124/255, blue: 137/255),
                                                            Color(red: 35/255, green: 96/255, blue: 96/255),
-                                                           Color(red: 14/255, green: 69/255, blue: 96/255),
+//                                                           Color(red: 14/255, green: 69/255, blue: 96/255),
                                                            Color(red: 11/255, green: 65/255, blue: 91/255)]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 GeometryReader{ geo in
                     
                     VStack {
-                        
                         Image("logo")
                             .resizable()
-                            .offset(x: (geo.size.width / 2) - 200, y: (geo.size.height / 2) - 300 )
-                            .frame(width: 400,height: 400)
-                        
-                        
+                            .offset(x: (geo.size.width / 2) - 200, y: (geo.size.height / 2) - 300)
+                            .frame(width: 400, height: 400)
+                            .scaleEffect(scaleLogo)
+                            .animation(.spring(duration: 2, bounce: 0.9), value: scaleLogo)
+                                                        
                         Text("Break Free,")
                             .font(.title2)
                             .bold()
@@ -44,23 +46,33 @@ struct StartView: View {
                             .font(.callout)
                             .foregroundColor(Color(white: 0.9))
                             .offset(y:  geo.size.height * 0.05)
+                            .animation(.linear(duration: 2))
+                            
                         
-                        
-                        Button("Get Started") {
-                            isStarted = true
+                        if name == "" {
+                            Button("Get Started") {
+                                isStarted = true
+                            }
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(width: 150, height: 10)
+                            .padding()
+                            .background(Color(red: 11/255, green: 207/255, blue: 235/255))
+                            .cornerRadius(20)
+                            .offset(y: geo.size.height * 0.3)
                         }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(width: 150, height: 10)
-                        .padding()
-                        .background(Color(red: 11/255, green: 207/255, blue: 235/255))
-                        .cornerRadius(20)
-                        .offset(y: geo.size.height * 0.3)
-                        
                     }
                 }
             }
             .ignoresSafeArea(.all)
+            .onAppear{
+                scaleLogo = 1.1
+                if name != ""{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        isStarted = true
+                    }
+                }
+            }
         }
     }
 }
