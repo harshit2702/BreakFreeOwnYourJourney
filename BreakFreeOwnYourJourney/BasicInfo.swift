@@ -10,6 +10,7 @@ import SwiftUI
 struct BasicInfo: View {
     @AppStorage("Name") var name: String = ""
     @AppStorage("DOB") var DOB: String = ""
+    @AppStorage("DailyPuffIntake") var DailyPuffIntake: Int = 0
     @State private var enteredName = ""
     @State private var selectedDate = Date()
     @Binding var isBasicInfo: Bool
@@ -55,6 +56,16 @@ struct BasicInfo: View {
                 
                 DatePicker("Date of Birth", selection: $selectedDate, displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
+                
+                Divider()
+                
+                Text("Daily Puff Intake")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+                
+                Stepper("\(DailyPuffIntake)", value: $DailyPuffIntake)
+                    .foregroundColor(Color(red: 11/255, green: 65/255, blue: 91/255))
+                    .font(.largeTitle)
                 
                 HStack{
                     Spacer()
