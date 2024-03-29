@@ -159,16 +159,39 @@ struct HomeScreen: View {
                     .resizable()
                     .opacity(0.7)
                 ScrollView {
-                    VStack(alignment: .leading){
+                    VStack{
                         Rectangle()
                             .frame(height: 50)
                             .foregroundColor(.clear)
                         Text(name)
                             .font(.largeTitle.bold())
+                            .multilineTextAlignment(.leading)
                             .padding([.leading])
                         
-                        ProgressView("Today's Puff Intake", value: todayPuffIntake, total: Double(DailyPuffIntake))
-                            .padding([.leading,.trailing])
+                        
+                        VStack (alignment: .center){
+                            ZStack {
+                                Circle()
+                                    .stroke(lineWidth: 30)
+                                    .opacity(0.3)
+                                
+                                Circle()
+                                    .trim(from: 0, to: CGFloat((todayPuffIntake + 3) / Double(DailyPuffIntake)))
+                                    .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                                    .foregroundColor(.pink)
+                                    .rotationEffect(Angle(degrees: -90))
+                                
+                                VStack{
+                                    Text("\(Int(todayPuffIntake))")
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                    Text("of \(DailyPuffIntake) is Taken Today")
+                                }
+                            }
+                            .frame(width: 200, height: 200)
+                        }
+                        .padding(.bottom)
+
                         ZStack{
                             Rectangle()
                                 .frame(height: 400)
