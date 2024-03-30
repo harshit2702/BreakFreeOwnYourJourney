@@ -52,7 +52,7 @@ struct puffMonthDetails: View {
                     position: .automatic, spacing: 0,
                     overflowResolution: .init(
                         x: .fit(to: .chart),
-                        y: .fill
+                        y: .disabled
                     )
                 ) {
                     valueSelectionPopover
