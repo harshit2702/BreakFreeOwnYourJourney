@@ -12,7 +12,9 @@ struct puffMonthDetails: View {
     
     @Binding var rawSelectedDate: Date?
     @Environment(\.calendar) var calendar
+    @Environment(\.colorScheme) var colorScheme
     @Binding var scrollPositionStartM: Date
+    
     var Data: [PuffTrackingData]
     
     func endOfDay(for date: Date) -> Date {
@@ -47,7 +49,7 @@ struct puffMonthDetails: View {
                 .offset(yStart: -10)
                 .zIndex(-1)
                 .annotation(
-                    position: .top, spacing: 0,
+                    position: .automatic, spacing: 0,
                     overflowResolution: .init(
                         x: .fit(to: .chart),
                         y: .disabled
@@ -67,6 +69,8 @@ struct puffMonthDetails: View {
             }
         }
         .chartScrollPosition(x: $scrollPositionStartM)
+        .chartXSelection(value: $rawSelectedDate)
+        
     }
     
     @ViewBuilder
@@ -77,47 +81,28 @@ struct puffMonthDetails: View {
                 Text("Puff on \(selectedDate, format: .dateTime.weekday(.wide))s")
                     .font(.callout)
                     .foregroundStyle(.secondary)
-                    .fixedSize()
                 HStack(spacing: 20) {
-//                    ForEach(salesPerCity) { salesInfo in
-//                        VStack(alignment: .leading, spacing: 1) {
-//                            HStack(alignment: .lastTextBaseline, spacing: 4) {
-//                                Text("\(salesInfo.count, format: .number)")
-//                                    .font(.title2.bold())
-//                                    .foregroundColor(colorPerCity[salesInfo.city])
-//                                    .blendMode(colorScheme == .light ? .plusDarker : .normal)
-//                                
-//                                    Text("sales")
-//                                    .font(.callout)
-//                                        .foregroundStyle(.secondary)
-//                            }
-//                            HStack(spacing: 6) {
-//                                if salesInfo.city == "San Francisco" {
-//                                    legendCircle
-//                                } else {
-//                                    legendSquare
-//                                }
-//                                Text("\(salesInfo.city)")
-//                                    .font(.caption2)
-//                                    .foregroundStyle(.secondary)
-//                            }
-//                        }
-//                    }
+                    Text("\(puffPerDay, format: .number)")
+                        .font(.title2.bold())
+                        .blendMode(colorScheme == .light ? .plusDarker : .normal)
                 }
             }
-            .padding(6)
+            .padding()
             .background {
                 RoundedRectangle(cornerRadius: 4)
-                    .foregroundStyle(Color.gray.opacity(0.12))
+                    .foregroundStyle(Color.red.opacity(0.12))
             }
         } else {
             EmptyView()
         }
     }
     
-    func puffPerDay(on selectedDate: Date){
-        
-    }
+    func puffPerDay(on selectedDate: Date) -> Int? {
+            let startOfDay = Calendar.current.startOfDay(for: selectedDate)
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            
+            return Data.filter({ $0.date >= startOfDay && $0.date < endOfDay }).reduce(0, { $0 + $1.numberOfPuff })
+        }
     
 }
 //#Preview {

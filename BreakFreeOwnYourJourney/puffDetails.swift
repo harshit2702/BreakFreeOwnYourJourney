@@ -104,7 +104,7 @@ struct puffDetails: View {
                 }
                 .opacity(rawSelectedDate == nil ? 1.0 : 0.0)
                 
-                puffMonthDetails(scrollPositionStartM: $scrollPositionStartM, Data: sampleData )
+                puffMonthDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartM: $scrollPositionStartM, Data: sampleData )
 
 
 
