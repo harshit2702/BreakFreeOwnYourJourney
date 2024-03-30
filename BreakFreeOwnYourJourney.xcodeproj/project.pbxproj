@@ -15,6 +15,8 @@
 		B185EF742B9778990035B807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B185EF732B9778990035B807 /* Assets.xcassets */; };
 		B185EF772B9778990035B807 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B185EF762B9778990035B807 /* Preview Assets.xcassets */; };
 		B1B349892B98748B009BD7E2 /* PuffTrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B349882B98748B009BD7E2 /* PuffTrackingData.swift */; };
+		B1E94FDE2BB6E8660063C49E /* puffDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E94FDD2BB6E8660063C49E /* puffDetails.swift */; };
+		B1E94FE02BB711AB0063C49E /* puffMonthDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E94FDF2BB711AA0063C49E /* puffMonthDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		B185EF732B9778990035B807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B185EF762B9778990035B807 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B1B349882B98748B009BD7E2 /* PuffTrackingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuffTrackingData.swift; sourceTree = "<group>"; };
+		B1E94FDD2BB6E8660063C49E /* puffDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = puffDetails.swift; sourceTree = "<group>"; };
+		B1E94FDF2BB711AA0063C49E /* puffMonthDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = puffMonthDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 				B129BDAC2B97A60100C24E5D /* StartView.swift */,
 				B129BDAA2B97A3E500C24E5D /* BasicInfo.swift */,
 				B129BDAE2B98341000C24E5D /* HomeScreen.swift */,
+				B1E94FDD2BB6E8660063C49E /* puffDetails.swift */,
+				B1E94FDF2BB711AA0063C49E /* puffMonthDetails.swift */,
 				B1B349882B98748B009BD7E2 /* PuffTrackingData.swift */,
 				B185EF732B9778990035B807 /* Assets.xcassets */,
 				B185EF752B9778990035B807 /* Preview Content */,
@@ -153,7 +159,9 @@
 				B129BDAF2B98341000C24E5D /* HomeScreen.swift in Sources */,
 				B185EF722B9778900035B807 /* ContentView.swift in Sources */,
 				B185EF702B9778900035B807 /* BreakFreeOwnYourJourneyApp.swift in Sources */,
+				B1E94FDE2BB6E8660063C49E /* puffDetails.swift in Sources */,
 				B129BDAD2B97A60100C24E5D /* StartView.swift in Sources */,
+				B1E94FE02BB711AB0063C49E /* puffMonthDetails.swift in Sources */,
 				B1B349892B98748B009BD7E2 /* PuffTrackingData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
