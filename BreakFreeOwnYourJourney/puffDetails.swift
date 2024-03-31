@@ -58,6 +58,7 @@ struct puffDetails: View {
     }
     
     @State var rawSelectedDate: Date? = nil
+    @State var rawSelectedMonth: Date? = nil
 
     
     var body: some View {
@@ -124,8 +125,8 @@ struct puffDetails: View {
 
             case .year:
                 ZStack{
-                    if rawSelectedDate == nil {
-                        VStack{
+                    if rawSelectedMonth == nil {
+                        VStack(alignment: .leading){
                             Text("Number of puff: \(salesInPeriod(in: scrollPositionStartY...scrollPositionEndY))")
                                 .font(.title2.bold())
                                 .foregroundColor(.primary)
@@ -136,13 +137,13 @@ struct puffDetails: View {
                         }
                     }
                     else{
-                        if let selectedDate = rawSelectedDate,
-                           let puffPerDay = puffPerDay(on: selectedDate){
+                        if let selectedMonth = rawSelectedMonth,
+                           let avgPuffPerMonths = avgPuffPerMonths(on: selectedMonth as Date){
                             VStack(alignment: .leading) {
-                                Text("Average Puff on  \(selectedDate, format: .dateTime.month())")
+                                Text("Average Puff on  \(selectedMonth, format: .dateTime.month())")
                                     .font(.callout)
                                     .foregroundStyle(.secondary)
-                                Text("\(puffPerDay, format: .number)")
+                                Text("\(avgPuffPerMonths, format: .number)")
                                     .font(.title2.bold())
                                     .blendMode(colorScheme == .light ? .plusDarker : .normal)
                             }
@@ -155,12 +156,15 @@ struct puffDetails: View {
                         }
                     }
                 }
-                puffYearDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartY: $scrollPositionStartY, Data: sampleData)
+                puffYearDetails(rawSelectedMonth: $rawSelectedMonth, scrollPositionStartY: $scrollPositionStartY, Data: sampleData)
             }
             
             
         }
         .padding()
+        .onChange(of: rawSelectedMonth) { oldValue, newValue in
+            print(newValue)
+        }
     }
     
     func puffPerDay(on selectedDate: Date) -> Int? {
@@ -177,11 +181,15 @@ struct puffDetails: View {
         
         let filteredData = sampleData.filter { $0.date >= startOfMonth && $0.date <= endOfMonth }
         let totalPuff = filteredData.reduce(0) { $0 + $1.numberOfPuff }
-        let numberOfMonths = Calendar.current.dateComponents([.month], from: startOfMonth, to: endOfMonth).month ?? 0
-        
+        print("totalPuff: \(totalPuff)")
+        let numberOfMonths = Calendar.current.dateComponents([.day], from: startOfMonth, to: endOfMonth).day ?? 0
+        print("numberOfMonths: \(numberOfMonths)")
         if numberOfMonths > 0 {
+            print("not nil")
             return totalPuff / numberOfMonths
         } else {
+            print("nil")
+            
             return nil
         }
     }

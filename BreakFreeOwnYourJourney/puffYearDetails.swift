@@ -10,7 +10,7 @@ import Charts
 
 struct puffYearDetails: View {
     
-    @Binding var rawSelectedDate: Date?
+    @Binding var rawSelectedMonth: Date?
     @Environment(\.calendar) var calendar
     @Environment(\.colorScheme) var colorScheme
     @Binding var scrollPositionStartY: Date
@@ -24,9 +24,10 @@ struct puffYearDetails: View {
     }
     
     var selectedMonth: Date? {
-        if let rawSelectedDate = rawSelectedDate {
-            let selectedMonth = calendar.component(.month, from: rawSelectedDate)
-            return selectedMonth
+        if let rawSelectedMonth{
+            let selectedMonth = calendar.component(.month, from: rawSelectedMonth)
+            let selectedMonthDate = calendar.date(bySetting: .month, value: selectedMonth, of: rawSelectedMonth)
+                        return selectedMonthDate
         }
 
         return nil
@@ -58,7 +59,7 @@ struct puffYearDetails: View {
             }
         }
         .chartScrollPosition(x: $scrollPositionStartY)
-        .chartXSelection(value: $rawSelectedDate)
+        .chartXSelection(value: $rawSelectedMonth)
 
 
     }
