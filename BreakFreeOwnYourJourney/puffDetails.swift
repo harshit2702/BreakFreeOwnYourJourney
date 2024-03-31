@@ -171,6 +171,20 @@ struct puffDetails: View {
         }
     
     //func avgPuffPerMonths
+    func avgPuffPerMonths(on selectedDate: Date) -> Int? {
+        let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: selectedDate))!
+        let endOfMonth = Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+        
+        let filteredData = sampleData.filter { $0.date >= startOfMonth && $0.date <= endOfMonth }
+        let totalPuff = filteredData.reduce(0) { $0 + $1.numberOfPuff }
+        let numberOfMonths = Calendar.current.dateComponents([.month], from: startOfMonth, to: endOfMonth).month ?? 0
+        
+        if numberOfMonths > 0 {
+            return totalPuff / numberOfMonths
+        } else {
+            return nil
+        }
+    }
 }
 
 #Preview {

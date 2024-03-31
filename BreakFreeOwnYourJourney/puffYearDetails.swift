@@ -18,18 +18,17 @@ struct puffYearDetails: View {
     var Data: [PuffTrackingData]
     
     func endOfMonth(for date: Date) -> Date {
-        calendar.date(byAdding: .day, value: 1, to: date)!
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+        return endOfMonth
     }
     
     var selectedMonth: Date? {
-        if let rawSelectedDate {
-            return Data.first(where: {
-                let endOfDay = endOfMonth(for: $0.date)
-                
-                return ($0.date ... endOfDay).contains(rawSelectedDate)
-            })?.date
+        if let rawSelectedDate = rawSelectedDate {
+            let selectedMonth = calendar.component(.month, from: rawSelectedDate)
+            return selectedMonth
         }
-        
+
         return nil
     }
 
