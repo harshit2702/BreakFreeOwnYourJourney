@@ -100,7 +100,6 @@ struct puffDetails: View {
                 }
                 
                 puffWeekDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStart: $scrollPositionStart, Data: sampleData)
-                    .frame(height: 400)
                 
             case .month:
                 ZStack{
@@ -170,6 +169,8 @@ struct puffDetails: View {
             
             return sampleData.filter({ $0.date >= startOfDay && $0.date < endOfDay }).reduce(0, { $0 + $1.numberOfPuff })
         }
+    
+    //func avgPuffPerMonths
 }
 
 #Preview {

@@ -12,6 +12,9 @@
 		B129BDAF2B98341000C24E5D /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B129BDAE2B98341000C24E5D /* HomeScreen.swift */; };
 		B1592D692BB91E4600707C0A /* puffWeekDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1592D682BB91E4600707C0A /* puffWeekDetails.swift */; };
 		B1592D6B2BB91F3900707C0A /* puffYearDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1592D6A2BB91F3900707C0A /* puffYearDetails.swift */; };
+		B1592D6F2BB9356500707C0A /* GoalsAndChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1592D6E2BB9356400707C0A /* GoalsAndChallenges.swift */; };
+		B1592D712BB9357000707C0A /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1592D702BB9357000707C0A /* Resources.swift */; };
+		B1592D732BB9413B00707C0A /* AddData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1592D722BB9413B00707C0A /* AddData.swift */; };
 		B185EF702B9778900035B807 /* BreakFreeOwnYourJourneyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185EF6F2B9778900035B807 /* BreakFreeOwnYourJourneyApp.swift */; };
 		B185EF722B9778900035B807 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185EF712B9778900035B807 /* ContentView.swift */; };
 		B185EF742B9778990035B807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B185EF732B9778990035B807 /* Assets.xcassets */; };
@@ -27,6 +30,9 @@
 		B129BDAE2B98341000C24E5D /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		B1592D682BB91E4600707C0A /* puffWeekDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = puffWeekDetails.swift; sourceTree = "<group>"; };
 		B1592D6A2BB91F3900707C0A /* puffYearDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = puffYearDetails.swift; sourceTree = "<group>"; };
+		B1592D6E2BB9356400707C0A /* GoalsAndChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsAndChallenges.swift; sourceTree = "<group>"; };
+		B1592D702BB9357000707C0A /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
+		B1592D722BB9413B00707C0A /* AddData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddData.swift; sourceTree = "<group>"; };
 		B185EF6C2B9778900035B807 /* BreakFreeOwnYourJourney.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BreakFreeOwnYourJourney.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B185EF6F2B9778900035B807 /* BreakFreeOwnYourJourneyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakFreeOwnYourJourneyApp.swift; sourceTree = "<group>"; };
 		B185EF712B9778900035B807 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +78,9 @@
 				B129BDAC2B97A60100C24E5D /* StartView.swift */,
 				B129BDAA2B97A3E500C24E5D /* BasicInfo.swift */,
 				B129BDAE2B98341000C24E5D /* HomeScreen.swift */,
+				B1592D722BB9413B00707C0A /* AddData.swift */,
+				B1592D6E2BB9356400707C0A /* GoalsAndChallenges.swift */,
+				B1592D702BB9357000707C0A /* Resources.swift */,
 				B1E94FDD2BB6E8660063C49E /* puffDetails.swift */,
 				B1592D682BB91E4600707C0A /* puffWeekDetails.swift */,
 				B1E94FDF2BB711AA0063C49E /* puffMonthDetails.swift */,
@@ -163,12 +172,15 @@
 			files = (
 				B1592D6B2BB91F3900707C0A /* puffYearDetails.swift in Sources */,
 				B129BDAB2B97A3E500C24E5D /* BasicInfo.swift in Sources */,
+				B1592D6F2BB9356500707C0A /* GoalsAndChallenges.swift in Sources */,
 				B129BDAF2B98341000C24E5D /* HomeScreen.swift in Sources */,
 				B185EF722B9778900035B807 /* ContentView.swift in Sources */,
 				B185EF702B9778900035B807 /* BreakFreeOwnYourJourneyApp.swift in Sources */,
 				B1E94FDE2BB6E8660063C49E /* puffDetails.swift in Sources */,
 				B129BDAD2B97A60100C24E5D /* StartView.swift in Sources */,
 				B1E94FE02BB711AB0063C49E /* puffMonthDetails.swift in Sources */,
+				B1592D712BB9357000707C0A /* Resources.swift in Sources */,
+				B1592D732BB9413B00707C0A /* AddData.swift in Sources */,
 				B1B349892B98748B009BD7E2 /* PuffTrackingData.swift in Sources */,
 				B1592D692BB91E4600707C0A /* puffWeekDetails.swift in Sources */,
 			);

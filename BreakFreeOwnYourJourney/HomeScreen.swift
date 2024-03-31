@@ -69,138 +69,125 @@ struct HomeScreen: View {
     
     @State private var keyFreq = ""
     @State private var valueFreq = -1
-    
-    @State private var timeRange: timeRange = .month
-    
-    @State var scrollPositionStartY: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 365)
-
-    var scrollPositionEndY: Date {
-        scrollPositionStartM.addingTimeInterval(3600 * 24 * 365)
-    }
-    
-    var scrollPositionStringY: String {
-        scrollPositionStartM.formatted(.dateTime.year().month())
-    }
-    
-    var scrollPositionEndStringY: String {
-        scrollPositionEndM.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().year())
-    }
-
-    @State var scrollPositionStartM: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 30)
-
-    var scrollPositionEndM: Date {
-        scrollPositionStartM.addingTimeInterval(3600 * 24 * 30)
-    }
-    
-    var scrollPositionStringM: String {
-        scrollPositionStartM.formatted(.dateTime.month().day())
-    }
-    
-    var scrollPositionEndStringM: String {
-        scrollPositionEndM.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().day().year())
-    }
-    
-    @State var scrollPositionStart: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 7)
-    
-    var scrollPositionEnd: Date {
-        scrollPositionStart.addingTimeInterval(3600 * 24 * 7)
-    }
-    
-    var scrollPositionString: String {
-        scrollPositionStart.formatted(.dateTime.month().day())
-    }
-    
-    var scrollPositionEndString: String {
-        scrollPositionEnd.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().day().year())
-    }
+        
     
     var body: some View {
         NavigationStack{
             ZStack{
-                Image(backgroundImage)
-                    .resizable()
-                    .opacity(0.7)
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .foregroundColor(.black)
-                    .opacity(0.2)
-                ScrollView {
-                    VStack{
+                TabView{
+                    Resources()
+                        .tabItem { 
+                            Text("Resources")
+                            Image(systemName: "book.fill")
+                        }
+                    ZStack{
+                        Image(backgroundImage)
+                            .resizable()
+                            .opacity(0.7)
                         Rectangle()
-                            .frame(height: 50)
-                            .foregroundColor(.clear)
-                        Text(name)
-                            .font(.largeTitle.bold())
-                            .multilineTextAlignment(.leading)
-                            .padding([.leading])
-                        
-                        
-                        VStack (alignment: .center){
-                            ZStack {
-                                Circle()
-                                    .stroke(lineWidth: 30)
-                                    .opacity(0.3)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .foregroundColor(.black)
+                            .opacity(0.2)
+                        ScrollView {
+                            VStack{
+                                Rectangle()
+                                  .frame(height: 50)
+                                  .foregroundColor(.clear)
+                                VStack (alignment: .center){
+                                    ZStack {
+                                        Circle()
+                                            .stroke(lineWidth: 30)
+                                            .opacity(0.3)
+                                        
+                                        Circle()
+                                            .trim(from: 0, to: CGFloat((todayPuffIntake + 3) / Double(DailyPuffIntake)))
+                                            .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                                            .foregroundColor(.pink)
+                                            .rotationEffect(Angle(degrees: -90))
+                                        
+                                        VStack{
+                                            Text("\(Int(todayPuffIntake))")
+                                                .font(.largeTitle)
+                                                .fontWeight(.bold)
+                                            Text("of \(DailyPuffIntake) is Taken Today")
+                                        }
+                                    }
+                                    .frame(width: 200, height: 200)
+                                }
+                                .padding(.bottom)
                                 
-                                Circle()
-                                    .trim(from: 0, to: CGFloat((todayPuffIntake + 3) / Double(DailyPuffIntake)))
-                                    .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
-                                    .foregroundColor(.pink)
-                                    .rotationEffect(Angle(degrees: -90))
-                                
-                                VStack{
-                                    Text("\(Int(todayPuffIntake))")
-                                        .font(.largeTitle)
-                                        .fontWeight(.bold)
-                                    Text("of \(DailyPuffIntake) is Taken Today")
+                                ZStack{
+                                    Rectangle()
+                                        .frame(height: 400)
+                                        .foregroundColor(Color.blue)
+                                        .opacity(0.2)
+                                    puffDetails()
+                                    
+                                }
+                                ZStack{
+                                    Rectangle()
+                                        .frame(height: 340)
+                                        .foregroundColor(Color.blue)
+                                        .opacity(0.2)
+                                    VStack(alignment: .leading){
+                                        Text("Most Used Nicotine Concentration")
+                                            .foregroundColor(.secondary)
+                                        
+                                        if let (key , values)  = maxfrequency ?? ("",-1){
+                                            Text("\(key) mg/ml")
+                                                .font(.title2.bold())
+                                                .foregroundColor(.primary)
+                                        }
+                                        
+                                        Chart(Array(freqDebt), id: \.key){ puff in
+                                            SectorMark(
+                                                angle: .value("Concentration", puff.value),
+                                                innerRadius: .ratio(0.618),
+                                                angularInset: 1.5
+                                            )
+                                            .cornerRadius(5.0)
+                                            .foregroundStyle(by: .value("Occurence", puff.key))
+                                            .opacity( puff.key == keyFreq ? 1 : 0.3 )
+                                        }
+                                        .frame(height: 280)
+                                    }
+                                    .padding()
+                                    
                                 }
                             }
-                            .frame(width: 200, height: 200)
-                        }
-                        .padding(.bottom)
-
-                        ZStack{
-                            Rectangle()
-                                .frame(height: 400)
-                                .foregroundColor(Color.blue)
-                                .opacity(0.2)
-                            puffDetails()
-
-                        }
-                        ZStack{
-                            Rectangle()
-                                .frame(height: 340)
-                                .foregroundColor(Color.blue)
-                                .opacity(0.2)
-                            VStack(alignment: .leading){
-                                Text("Most Used Nicotine Concentration")
-                                    .foregroundColor(.secondary)
-                                
-                                if let (key , values)  = maxfrequency ?? ("",-1){
-                                    Text("\(key) mg/ml")
-                                        .font(.title2.bold())
-                                        .foregroundColor(.primary)
-                                }
-                                
-                                Chart(Array(freqDebt), id: \.key){ puff in
-                                    SectorMark(
-                                        angle: .value("Concentration", puff.value),
-                                        innerRadius: .ratio(0.618),
-                                        angularInset: 1.5
-                                    )
-                                    .cornerRadius(5.0)
-                                    .foregroundStyle(by: .value("Occurence", puff.key))
-                                    .opacity( puff.key == keyFreq ? 1 : 0.3 )
-                                }
-                                .frame(height: 280)
-                            }
-                            .padding()
-
                         }
                     }
+                    .tabItem {
+                        Text("Home")
+                        Image(systemName: "house")
+                    }
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    
+                    GoalsAndChallenges()
+                        .tabItem {
+                            Text("Goals")
+                            Image(systemName: "medal.fill")
+                        }
+                    AddData()
+                        .tabItem {
+                            Text("Add")
+                            Image(systemName: "plus.app.fill")
+                        }
+                    
                 }
             }
-            .ignoresSafeArea(.all)
+            .edgesIgnoringSafeArea(.top)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading){
+                    Button{
+                    }label:{
+                        Text(name)
+                            .foregroundColor(.black)
+                            .font(.largeTitle.bold())
+                            .multilineTextAlignment(.leading)
+                    }
+                    
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Button(action: {
