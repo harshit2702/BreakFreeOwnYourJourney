@@ -75,11 +75,6 @@ struct HomeScreen: View {
         NavigationStack{
             ZStack{
                 TabView{
-                    Resources()
-                        .tabItem { 
-                            Text("Resources")
-                            Image(systemName: "book.fill")
-                        }
                     ZStack{
                         Image(backgroundImage)
                             .resizable()
@@ -162,6 +157,14 @@ struct HomeScreen: View {
                         Image(systemName: "house")
                     }
                     .toolbarBackground(.visible, for: .navigationBar)
+                    
+                    
+                    
+                    Resources()
+                        .tabItem {
+                            Text("Resources")
+                            Image(systemName: "book.fill")
+                        }
                     
                     GoalsAndChallenges()
                         .tabItem {

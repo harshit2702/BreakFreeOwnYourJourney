@@ -18,15 +18,15 @@ struct puffDetails: View {
     @State var scrollPositionStartY: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 365)
 
     var scrollPositionEndY: Date {
-        scrollPositionStartM.addingTimeInterval(3600 * 24 * 365)
+        scrollPositionStartY.addingTimeInterval(3600 * 24 * 365)
     }
     
     var scrollPositionStringY: String {
-        scrollPositionStartM.formatted(.dateTime.year().month())
+        scrollPositionStartY.formatted(.dateTime.year().month())
     }
     
     var scrollPositionEndStringY: String {
-        scrollPositionEndM.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().year())
+        scrollPositionEndY.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().year())
     }
 
     @State var scrollPositionStartM: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 30)
