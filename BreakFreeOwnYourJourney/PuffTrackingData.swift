@@ -36,9 +36,9 @@ enum timeRange{
 
 
 var sampleData: [PuffTrackingData] = [
-    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 30)), numberOfPuff: 15, nicotineStrength: 18.0, puffDurationInMinutes: 7, additionalNotes: "Craving after dinner"),
-    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 29)), numberOfPuff: 7, nicotineStrength: 12.0, puffDurationInMinutes: 2, additionalNotes: ""),
-    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 28)), numberOfPuff: 11, nicotineStrength: 15.6, puffDurationInMinutes: 6, additionalNotes: "With friend who vapes"),
+    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 32)), numberOfPuff: 15, nicotineStrength: 18.0, puffDurationInMinutes: 7, additionalNotes: "Craving after dinner"),
+    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 33)), numberOfPuff: 7, nicotineStrength: 12.0, puffDurationInMinutes: 2, additionalNotes: ""),
+    PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 34)), numberOfPuff: 11, nicotineStrength: 15.6, puffDurationInMinutes: 6, additionalNotes: "With friend who vapes"),
     PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 27)), numberOfPuff: 5, nicotineStrength: 12.0, puffDurationInMinutes: 3, additionalNotes: ""),
     PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 26)), numberOfPuff: 9, nicotineStrength: 15.6, puffDurationInMinutes: 4, additionalNotes: "Feeling anxious"),
     PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 25)), numberOfPuff: 6, nicotineStrength: 12.0, puffDurationInMinutes: 2, additionalNotes: ""),

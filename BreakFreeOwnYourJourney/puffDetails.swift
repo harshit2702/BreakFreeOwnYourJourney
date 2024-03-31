@@ -12,6 +12,8 @@ import SwiftData
 struct puffDetails: View {
     
     @State private var timeRange: timeRange = .month
+    @Environment(\.calendar) var calendar
+    @Environment(\.colorScheme) var colorScheme
     
     @State var scrollPositionStartY: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 365)
 
@@ -64,80 +66,110 @@ struct puffDetails: View {
                 .padding(.bottom)
             switch timeRange {
             case .week:
-                Text("Number of puff: \(salesInPeriod(in: scrollPositionStart...scrollPositionEnd))")
-                    .font(.title2.bold())
-                    .foregroundColor(.primary)
-                
-                Text("\(scrollPositionString) – \(scrollPositionEndString)")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                
-                Chart(sampleData){ puff in
-                    BarMark(
-                        x: .value("Day", puff.date,unit: .day),
-                        y: .value("Number of puff", puff.numberOfPuff),
-                        width: .ratio(0.6)
-                    )
-                }
-                .chartScrollableAxes(.horizontal)
-                .chartXVisibleDomain(length: 3600 * 24 * 7 )
-                .foregroundColor(.orange)
-                .chartXAxis {
-                    AxisMarks(values: .stride(by: .day, count: 1)) {
-                        AxisTick()
-                        AxisGridLine()
-                        AxisValueLabel(format: .dateTime.month().day())
+                ZStack{
+                    if rawSelectedDate == nil {
+                        VStack(alignment: .leading){
+                            Text("Number of puff: \(salesInPeriod(in: scrollPositionStart...scrollPositionEnd))")
+                                .font(.title2.bold())
+                                .foregroundColor(.primary)
+                            
+                            Text("\(scrollPositionString) – \(scrollPositionEndString)")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    else{
+                        if let selectedDate = rawSelectedDate,
+                           let puffPerDay = puffPerDay(on: selectedDate){
+                            VStack(alignment: .leading) {
+                                Text("Puff on \(selectedDate, format: .dateTime.weekday(.abbreviated).day())")
+                                    .font(.callout)
+                                    .foregroundStyle(.secondary)
+                                Text("\(puffPerDay, format: .number)")
+                                    .font(.title2.bold())
+                                    .blendMode(colorScheme == .light ? .plusDarker : .normal)
+                            }
+                            .background {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .foregroundStyle(Color.gray.opacity(0.12))
+                            }
+                            
+
+                        }
                     }
                 }
-                .chartScrollPosition(x: $scrollPositionStart)
-//                                    .frame(height: 240)
-            
+                
+                puffWeekDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStart: $scrollPositionStart, Data: sampleData)
+                    .frame(height: 400)
+                
             case .month:
-                VStack(alignment: .leading){
-                    Text("Number of puff: \(salesInPeriod(in: scrollPositionStartM...scrollPositionEndM))")
-                        .font(.title2.bold())
-                        .foregroundColor(.primary)
+                ZStack{
+                    VStack(alignment: .leading){
+                        Text("Number of puff: \(salesInPeriod(in: scrollPositionStartM...scrollPositionEndM))")
+                            .font(.title2.bold())
+                            .foregroundColor(.primary)
+                        
+                        Text("\(scrollPositionStringM) – \(scrollPositionEndStringM)")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                    .opacity(rawSelectedDate == nil ? 1.0 : 0.0)
                     
-                    Text("\(scrollPositionStringM) – \(scrollPositionEndStringM)")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
+                    
                 }
-                .opacity(rawSelectedDate == nil ? 1.0 : 0.0)
                 
                 puffMonthDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartM: $scrollPositionStartM, Data: sampleData )
+                
 
 
 
             case .year:
-                Text("Number of puff: \(salesInPeriod(in: scrollPositionStartY...scrollPositionEndY))")
-                    .font(.title2.bold())
-                    .foregroundColor(.primary)
-                
-                Text("\(scrollPositionStringY) – \(scrollPositionEndStringY)")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                Chart(sampleData) { puff in
-                    BarMark(
-                        x: .value("Day", puff.date,unit: .month),
-                        y: .value("Number of puff", puff.numberOfPuff),
-                        width: .ratio(0.6)
-                    )
-                }
-                .chartScrollableAxes(.horizontal)
-                .chartXVisibleDomain(length: 3600 * 24 * 365 )
-                .chartXAxis {
-                    AxisMarks(values: .stride(by: .month, count: 1)) {
-                        AxisTick()
-                        AxisGridLine()
-                        AxisValueLabel(format: .dateTime.month())
+                ZStack{
+                    if rawSelectedDate == nil {
+                        VStack{
+                            Text("Number of puff: \(salesInPeriod(in: scrollPositionStartY...scrollPositionEndY))")
+                                .font(.title2.bold())
+                                .foregroundColor(.primary)
+                            
+                            Text("\(scrollPositionStringY) – \(scrollPositionEndStringY)")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    else{
+                        if let selectedDate = rawSelectedDate,
+                           let puffPerDay = puffPerDay(on: selectedDate){
+                            VStack(alignment: .leading) {
+                                Text("Average Puff on  \(selectedDate, format: .dateTime.month())")
+                                    .font(.callout)
+                                    .foregroundStyle(.secondary)
+                                Text("\(puffPerDay, format: .number)")
+                                    .font(.title2.bold())
+                                    .blendMode(colorScheme == .light ? .plusDarker : .normal)
+                            }
+                            .background {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .foregroundStyle(Color.gray.opacity(0.12))
+                            }
+                            
+
+                        }
                     }
                 }
+                puffYearDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartY: $scrollPositionStartY, Data: sampleData)
             }
             
             
         }
         .padding()
     }
+    
+    func puffPerDay(on selectedDate: Date) -> Int? {
+            let startOfDay = Calendar.current.startOfDay(for: selectedDate)
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            
+            return sampleData.filter({ $0.date >= startOfDay && $0.date < endOfDay }).reduce(0, { $0 + $1.numberOfPuff })
+        }
 }
 
 #Preview {

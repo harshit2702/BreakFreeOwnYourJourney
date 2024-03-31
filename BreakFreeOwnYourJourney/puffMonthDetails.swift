@@ -52,7 +52,7 @@ struct puffMonthDetails: View {
                     position: .automatic, spacing: 0,
                     overflowResolution: .init(
                         x: .fit(to: .chart),
-                        y: .disabled
+                        y: .fit(to: .chart)
                     )
                 ) {
                     valueSelectionPopover
@@ -78,19 +78,17 @@ struct puffMonthDetails: View {
         if let selectedDate,
            let puffPerDay = puffPerDay(on: selectedDate) {
             VStack(alignment: .leading) {
-                Text("Puff on \(selectedDate, format: .dateTime.weekday(.wide))s")
-                    .font(.callout)
+                Text("Puff on \n\(selectedDate, format: .dateTime.weekday(.abbreviated).day())")
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                HStack(spacing: 20) {
-                    Text("\(puffPerDay, format: .number)")
-                        .font(.title2.bold())
-                        .blendMode(colorScheme == .light ? .plusDarker : .normal)
-                }
+                Text("\(puffPerDay, format: .number)")
+                    .font(.title3.bold())
+                    .blendMode(colorScheme == .light ? .plusDarker : .normal)
             }
             .padding()
             .background {
                 RoundedRectangle(cornerRadius: 4)
-                    .foregroundStyle(Color.red.opacity(0.12))
+                    .foregroundStyle(Color.gray.opacity(0.12))
             }
         } else {
             EmptyView()
