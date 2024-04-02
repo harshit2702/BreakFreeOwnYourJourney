@@ -165,6 +165,8 @@ struct HomeScreen: View {
                             Text("Resources")
                             Image(systemName: "book.fill")
                         }
+                        .toolbar(.hidden, for: .navigationBar)
+                    
                     
                     GoalsAndChallenges()
                         .tabItem {
