@@ -15,7 +15,10 @@ struct puffDetails: View {
     @Environment(\.calendar) var calendar
     @Environment(\.colorScheme) var colorScheme
     
-    @State var scrollPositionStartY: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 365)
+    @Query var puffTracking: [PuffTrackingData] 
+    
+    
+    @State var scrollPositionStartY: Date = Date.now.addingTimeInterval( -1 * 3600 * 24 * 365)
 
     var scrollPositionEndY: Date {
         scrollPositionStartY.addingTimeInterval(3600 * 24 * 365)
@@ -29,7 +32,7 @@ struct puffDetails: View {
         scrollPositionEndY.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().year())
     }
 
-    @State var scrollPositionStartM: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 30)
+    @State var scrollPositionStartM: Date = Date.now.addingTimeInterval( -1 * 3600 * 24 * 30)
 
     var scrollPositionEndM: Date {
         scrollPositionStartM.addingTimeInterval(3600 * 24 * 30)
@@ -43,7 +46,7 @@ struct puffDetails: View {
         scrollPositionEndM.addingTimeInterval(-(3600 * 24 * 1)).formatted(.dateTime.month().day().year())
     }
     
-    @State var scrollPositionStart: Date = sampleData.last!.date.addingTimeInterval( -1 * 3600 * 24 * 7)
+    @State var scrollPositionStart: Date = Date.now.addingTimeInterval( -1 * 3600 * 24 * 7)
     
     var scrollPositionEnd: Date {
         scrollPositionStart.addingTimeInterval(3600 * 24 * 7)
@@ -100,7 +103,7 @@ struct puffDetails: View {
                     }
                 }
                 
-                puffWeekDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStart: $scrollPositionStart, Data: sampleData)
+                puffWeekDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStart: $scrollPositionStart, Data: puffTracking)
                 
             case .month:
                 ZStack{
@@ -118,7 +121,7 @@ struct puffDetails: View {
                     
                 }
                 
-                puffMonthDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartM: $scrollPositionStartM, Data: sampleData )
+                puffMonthDetails(rawSelectedDate: $rawSelectedDate, scrollPositionStartM: $scrollPositionStartM, Data: puffTracking )
                 
 
 
@@ -156,22 +159,28 @@ struct puffDetails: View {
                         }
                     }
                 }
-                puffYearDetails(rawSelectedMonth: $rawSelectedMonth, scrollPositionStartY: $scrollPositionStartY, Data: sampleData)
+                puffYearDetails(rawSelectedMonth: $rawSelectedMonth, scrollPositionStartY: $scrollPositionStartY, Data: puffTracking)
             }
             
             
         }
         .padding()
         .onChange(of: rawSelectedMonth) { oldValue, newValue in
-            print(newValue)
+            print(newValue as Any)
         }
     }
+    
+    func salesInPeriod(in range: ClosedRange<Date>) -> Int {
+    //        sampleData.filter { range.contains($0.day) }.reduce(0) { $0 + $1.sales }
+        puffTracking.filter { range.contains($0.date) }.reduce(0) { $0 + $1.numberOfPuff}
+    }
+
     
     func puffPerDay(on selectedDate: Date) -> Int? {
             let startOfDay = Calendar.current.startOfDay(for: selectedDate)
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
             
-            return sampleData.filter({ $0.date >= startOfDay && $0.date < endOfDay }).reduce(0, { $0 + $1.numberOfPuff })
+            return puffTracking.filter({ $0.date >= startOfDay && $0.date < endOfDay }).reduce(0, { $0 + $1.numberOfPuff })
         }
     
     //func avgPuffPerMonths
@@ -179,7 +188,7 @@ struct puffDetails: View {
         let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: selectedDate))!
         let endOfMonth = Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
         
-        let filteredData = sampleData.filter { $0.date >= startOfMonth && $0.date <= endOfMonth }
+        let filteredData = puffTracking.filter { $0.date >= startOfMonth && $0.date <= endOfMonth }
         let totalPuff = filteredData.reduce(0) { $0 + $1.numberOfPuff }
         print("totalPuff: \(totalPuff)")
         let numberOfMonths = Calendar.current.dateComponents([.day], from: startOfMonth, to: endOfMonth).day ?? 0

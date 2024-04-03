@@ -24,11 +24,7 @@ struct puffWeekDetails: View {
     
     var selectedDate: Date? {
         if let rawSelectedDate {
-            return Data.first(where: {
-                let endOfDay = endOfDay(for: $0.date)
-                
-                return ($0.date ... endOfDay).contains(rawSelectedDate)
-            })?.date
+            return rawSelectedDate
         }
         
         return nil

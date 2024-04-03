@@ -11,7 +11,7 @@ import Charts
 
 struct TimeRangePicker: View {
     @Binding var value: timeRange
-
+    
     var body: some View {
         Picker(selection: $value.animation(.easeInOut), label: EmptyView()) {
             Text("Week").tag(timeRange.week)
@@ -20,11 +20,6 @@ struct TimeRangePicker: View {
         }
         .pickerStyle(.segmented)
     }
-}
-
-func salesInPeriod(in range: ClosedRange<Date>) -> Int {
-//        sampleData.filter { range.contains($0.day) }.reduce(0) { $0 + $1.sales }
-    sampleData.filter { range.contains($0.date) }.reduce(0) { $0 + $1.numberOfPuff}
 }
 
 struct HomeScreen: View {
@@ -37,10 +32,12 @@ struct HomeScreen: View {
     
     @State private var todayPuffIntake = 0.0
     @AppStorage("DailyPuffIntake") var DailyPuffIntake: Int = 0
+    @AppStorage("BasicInfo") var isBasicInfo = false
+
 
         
     var totalPuffs: Int {
-            sampleData.reduce(0) { $0 + $1.numberOfPuff }
+        puffTracking.reduce(0) { $0 + $1.numberOfPuff }
         }
     
     func calculateNicotineFrequency(data: [PuffTrackingData]) -> [String: Int] {
@@ -195,32 +192,39 @@ struct HomeScreen: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        Button(action: {
-                            backgroundImage = "bg1"
-                        }) {
-                            Image("bg1")
-                            Text("Background 1")
+                        Menu{
+                            Button(action: {
+                                backgroundImage = "bg1"
+                            }) {
+                                Image("bg1")
+                                Text("Background 1")
+                            }
+                            Button(action: {
+                                backgroundImage = "bg2"
+                            }) {
+                                Image("bg2")
+                                Text("Background 2")                        }
+                            Button(action: {
+                                backgroundImage = "bg3"
+                            }) {
+                                Image("bg3")
+                                Text("Background 3")                        }
+                            Button(action: {
+                                backgroundImage = "bg4"
+                            }) {
+                                Image("bg4")
+                                Text("Background 4")                        }
+                            Button(action: {
+                                backgroundImage = "bg5"
+                            }) {
+                                Image("bg5")
+                                Text("Background 5")                        }
+                        } label:{
+                            Text("Background")
                         }
-                        Button(action: {
-                            backgroundImage = "bg2"
-                        }) {
-                            Image("bg2")
-                            Text("Background 2")                        }
-                        Button(action: {
-                            backgroundImage = "bg3"
-                        }) {
-                            Image("bg3")
-                            Text("Background 3")                        }
-                        Button(action: {
-                            backgroundImage = "bg4"
-                        }) {
-                            Image("bg4")
-                            Text("Background 4")                        }
-                        Button(action: {
-                            backgroundImage = "bg5"
-                        }) {
-                            Image("bg5")
-                            Text("Background 5")                        }
+                        Button("Basic Info"){
+                            isBasicInfo = false
+                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                             .font(.title)
@@ -228,10 +232,10 @@ struct HomeScreen: View {
                 }
             }
             .onAppear{
-                freqDebt = calculateNicotineFrequency(data: sampleData)
+                freqDebt = calculateNicotineFrequency(data: puffTracking)
                 maxfrequency = freqDebt.max{ a, b in a.value < b.value  }
                 (keyFreq, valueFreq) = (maxfrequency ?? ("", -1))!
-                for i in sampleData{
+                for i in puffTracking{
                     if "\(i.date.formatted(.dateTime.year().month().day()) )" == "\(  Date.now.formatted(.dateTime.year().month().day()) )" {
                         todayPuffIntake += Double(i.numberOfPuff)
                     }
