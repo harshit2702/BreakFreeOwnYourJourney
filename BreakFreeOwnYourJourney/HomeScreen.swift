@@ -29,6 +29,8 @@ struct HomeScreen: View {
     @Environment(\.modelContext) var modelContext
     
     @Query var puffTracking: [PuffTrackingData]
+//    @State private var puffTracking = sampleData
+    
     
     @State private var todayPuffIntake = 0.0
     @AppStorage("DailyPuffIntake") var DailyPuffIntake: Int = 0
@@ -62,11 +64,29 @@ struct HomeScreen: View {
     
     @State private var freqDebt: [String: Int]  = [ : ]
     
+    @State var sortedFreqDebt: [Dictionary<String, Int>.Element] = []
+    
     @State private var maxfrequency: Optional<Dictionary<String, Int>.Element>?
     
     @State private var keyFreq = ""
     @State private var valueFreq = -1
+    
+    @State var selectedConcentration: Double? = nil
+ 
+    
+    @State var cumulativeSalesRangesForStyles: [(name: String, range: Range<Double>)]? = nil
+
+    
+    var selectedStyle: Optional<Dictionary<String, Int>.Element>? {
+        if let selectedConcentration,
+           let selectedIndex = cumulativeSalesRangesForStyles?
+            .firstIndex(where: { $0.range.contains(selectedConcentration) }) {
+            return sortedFreqDebt[selectedIndex]
+        }
         
+        return nil
+    }
+
     
     var body: some View {
         NavigationStack{
@@ -122,16 +142,11 @@ struct HomeScreen: View {
                                         .foregroundColor(Color.blue)
                                         .opacity(0.2)
                                     VStack(alignment: .leading){
-                                        Text("Most Used Nicotine Concentration")
+                                        Text("Nicotine Concentration")
                                             .foregroundColor(.secondary)
                                         
-                                        if let (key , values)  = maxfrequency ?? ("",-1){
-                                            Text("\(key) mg/ml")
-                                                .font(.title2.bold())
-                                                .foregroundColor(.primary)
-                                        }
                                         
-                                        Chart(Array(freqDebt), id: \.key){ puff in
+                                        Chart(Array(sortedFreqDebt), id: \.key){ puff in
                                             SectorMark(
                                                 angle: .value("Concentration", puff.value),
                                                 innerRadius: .ratio(0.618),
@@ -139,11 +154,38 @@ struct HomeScreen: View {
                                             )
                                             .cornerRadius(5.0)
                                             .foregroundStyle(by: .value("Occurence", puff.key))
-                                            .opacity( puff.key == keyFreq ? 1 : 0.3 )
+                                            .opacity(puff.key == (selectedStyle??.key ?? keyFreq) ? 1 : 0.3)
                                         }
-                                        .frame(height: 280)
+                                        .chartLegend(alignment: .center, spacing: 18)
+                                        .chartAngleSelection(value: $selectedConcentration)
+                                        .chartBackground { chartProxy in
+                                            GeometryReader { geometry in
+                                                let frame = geometry[chartProxy.plotFrame!]
+                                                VStack {
+                                                    Text("Most Used")
+                                                        .font(.callout)
+                                                        .foregroundStyle(.secondary)
+                                                        .opacity(selectedStyle == nil || selectedStyle??.key == keyFreq ? 1 : 0)
+                                                    Text(selectedStyle??.key ?? "\(keyFreq)")
+                                                        .font(.title2.bold())
+                                                        .foregroundColor(.primary)
+                                                    Text("\(selectedStyle??.value ?? valueFreq) Used")
+                                                        .font(.callout)
+                                                        .foregroundStyle(.secondary)
+                                                }
+                                                .position(x: frame.midX, y: frame.midY)
+                                            }
+                                        }
                                     }
                                     .padding()
+                                    
+                                }
+                                ZStack{
+                                    Rectangle()
+                                        .frame(height: 400)
+                                        .foregroundColor(Color.blue)
+                                        .opacity(0.2)
+                                    monthlyPuffDuration()
                                     
                                 }
                             }
@@ -233,8 +275,16 @@ struct HomeScreen: View {
             }
             .onAppear{
                 freqDebt = calculateNicotineFrequency(data: puffTracking)
+                sortedFreqDebt =  freqDebt.sorted(by: {$0.key < $1.key})
                 maxfrequency = freqDebt.max{ a, b in a.value < b.value  }
                 (keyFreq, valueFreq) = (maxfrequency ?? ("", -1))!
+                var cumulative = 0.0
+                cumulativeSalesRangesForStyles = sortedFreqDebt.map {
+                    let newCumulative = cumulative + Double($0.value)
+                    let result = (name: $0.key, range: cumulative ..< newCumulative)
+                    cumulative = newCumulative
+                    return result
+                }
                 for i in puffTracking{
                     if "\(i.date.formatted(.dateTime.year().month().day()) )" == "\(  Date.now.formatted(.dateTime.year().month().day()) )" {
                         todayPuffIntake += Double(i.numberOfPuff)

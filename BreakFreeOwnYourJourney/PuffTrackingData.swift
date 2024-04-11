@@ -68,3 +68,198 @@ var sampleData: [PuffTrackingData] = [
   PuffTrackingData(date: Date().addingTimeInterval(-(60 * 60 * 24 * 1)), numberOfPuff: 7, nicotineStrength: 12.0, puffDurationInMinutes: 2, additionalNotes: ""),
   PuffTrackingData(date: Date(), numberOfPuff: 19, nicotineStrength: 15.6, puffDurationInMinutes: 6, additionalNotes: "With friend who vapes")
 ]
+
+var sampleDataMonthly : [PuffTrackingData] = [
+    // January
+        PuffTrackingData(
+            date: Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)) ?? Date(), // Adjust for January 2023
+          numberOfPuff: 17,
+          nicotineStrength: 13.0,
+          puffDurationInMinutes: 4,
+          additionalNotes: "Cold weather cravings"
+        ),
+        // February
+        PuffTrackingData(
+            date: Calendar.current.date(from: DateComponents(year: 2023, month: 2, day: 1)) ?? Date(), // Adjust for February 2023 (consider leap year)
+          numberOfPuff: 10,
+          nicotineStrength: 12.5,
+          puffDurationInMinutes: 3,
+          additionalNotes: "Trying to cut down, feeling anxious"
+        ),
+        // March
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 3, day: 1)) ?? Date(), // Adjust for March 2023
+          numberOfPuff: 5,
+          nicotineStrength: 10.0,
+          puffDurationInMinutes: 2,
+          additionalNotes: "Feeling more in control, using lower strength vape"
+        ),
+        // April
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 4, day: 1)) ?? Date(), // Adjust for April 2023
+          numberOfPuff: 8,
+          nicotineStrength: 12.0,
+          puffDurationInMinutes: 3,
+          additionalNotes: "Feeling good, stress low"
+        ),
+        // May
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 5, day: 1)) ?? Date(), // Adjust for May 2023
+          numberOfPuff: 3,
+          nicotineStrength: 10.0,
+          puffDurationInMinutes: 1,
+          additionalNotes: "Rare cravings, strong willpower"
+        ),
+        // June
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 6, day: 1)) ?? Date(), // Adjust for June 2023
+          numberOfPuff: 0,
+          nicotineStrength: 0.0,
+          puffDurationInMinutes: 0.0,
+          additionalNotes: "Vaping-free for a month!"
+        ),
+        // July
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 7, day: 1)) ?? Date(), // Adjust for July 2023
+          numberOfPuff: 12,
+          nicotineStrength: 15.6,
+          puffDurationInMinutes: 6,
+          additionalNotes: "Vacation, occasional puffing"
+        ),
+        // August
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 1)) ?? Date(), // Adjust for August 2023
+          numberOfPuff: 6,
+          nicotineStrength: 12.0,
+          puffDurationInMinutes: 2,
+          additionalNotes: "Stressful deadline, slight setback"
+        ),
+        // September
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 1)) ?? Date(), // Adjust for September 2023
+          numberOfPuff: 6,
+          nicotineStrength: 12.0,
+          puffDurationInMinutes: 2,
+          additionalNotes: "Stressful deadline, slight setback"
+        ),
+        // October
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 1)) ?? Date(), // Adjust for October 2023
+          numberOfPuff: 0,
+          nicotineStrength: 0.0,
+          puffDurationInMinutes: 0.0,
+          additionalNotes: "Vaping-free for a month!"
+        ),
+        // November
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)) ?? Date(), // Adjust for November 2023
+          numberOfPuff: 12,
+          nicotineStrength: 15.6,
+          puffDurationInMinutes: 6,
+          additionalNotes: "Vacation, occasional puffing"
+        ),
+        // December
+        PuffTrackingData(
+          date: Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 1)) ?? Date(), // Adjust for December 2023
+          numberOfPuff: 6,
+          nicotineStrength: 12.0,
+          puffDurationInMinutes: 2,
+          additionalNotes: "Stressful deadline, slight setback"
+        ),
+        // January
+            PuffTrackingData(
+                date: Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)) ?? Date(), // Adjust for January 2023
+              numberOfPuff: 17,
+              nicotineStrength: 13.0,
+              puffDurationInMinutes: 14,
+              additionalNotes: "Cold weather cravings"
+            ),
+            // February
+            PuffTrackingData(
+                date: Calendar.current.date(from: DateComponents(year: 2023, month: 2, day: 1)) ?? Date(), // Adjust for February 2023 (consider leap year)
+              numberOfPuff: 10,
+              nicotineStrength: 12.5,
+              puffDurationInMinutes: 13,
+              additionalNotes: "Trying to cut down, feeling anxious"
+            ),
+            // March
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 3, day: 1)) ?? Date(), // Adjust for March 2023
+              numberOfPuff: 5,
+              nicotineStrength: 10.0,
+              puffDurationInMinutes: 12,
+              additionalNotes: "Feeling more in control, using lower strength vape"
+            ),
+            // April
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 4, day: 1)) ?? Date(), // Adjust for April 2023
+              numberOfPuff: 8,
+              nicotineStrength: 12.0,
+              puffDurationInMinutes: 13,
+              additionalNotes: "Feeling good, stress low"
+            ),
+            // May
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 5, day: 1)) ?? Date(), // Adjust for May 2023
+              numberOfPuff: 3,
+              nicotineStrength: 10.0,
+              puffDurationInMinutes: 11,
+              additionalNotes: "Rare cravings, strong willpower"
+            ),
+            // June
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 6, day: 1)) ?? Date(), // Adjust for June 2023
+              numberOfPuff: 0,
+              nicotineStrength: 0.0,
+              puffDurationInMinutes: 0.0,
+              additionalNotes: "Vaping-free for a month!"
+            ),
+            // July
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 7, day: 1)) ?? Date(), // Adjust for July 2023
+              numberOfPuff: 12,
+              nicotineStrength: 15.6,
+              puffDurationInMinutes: 16,
+              additionalNotes: "Vacation, occasional puffing"
+            ),
+            // August
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 8, day: 1)) ?? Date(), // Adjust for August 2023
+              numberOfPuff: 6,
+              nicotineStrength: 12.0,
+              puffDurationInMinutes: 12,
+              additionalNotes: "Stressful deadline, slight setback"
+            ),
+            // September
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 9, day: 1)) ?? Date(), // Adjust for September 2023
+              numberOfPuff: 6,
+              nicotineStrength: 12.0,
+              puffDurationInMinutes: 12,
+              additionalNotes: "Stressful deadline, slight setback"
+            ),
+            // October
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 12)) ?? Date(), // Adjust for October 2023
+              numberOfPuff: 0,
+              nicotineStrength: 0.0,
+              puffDurationInMinutes: 10.0,
+              additionalNotes: "failed "
+            ),
+            // November
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)) ?? Date(), // Adjust for November 2023
+              numberOfPuff: 12,
+              nicotineStrength: 15.6,
+              puffDurationInMinutes: 16,
+              additionalNotes: "Vacation, occasional puffing"
+            ),
+            // December
+            PuffTrackingData(
+              date: Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 1)) ?? Date(), // Adjust for December 2023
+              numberOfPuff: 6,
+              nicotineStrength: 12.0,
+              puffDurationInMinutes: 12,
+              additionalNotes: "Stressful deadline, slight setback"
+            )
+]
