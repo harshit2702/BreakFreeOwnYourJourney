@@ -29,7 +29,7 @@ struct HomeScreen: View {
     @Environment(\.modelContext) var modelContext
     
     @Query var puffTracking: [PuffTrackingData]
-//    @State private var puffTracking = sampleData
+//    @State private var puffTracking = sampleDataMonthly
     
     
     @State private var todayPuffIntake = 0.0
@@ -143,7 +143,8 @@ struct HomeScreen: View {
                                         .opacity(0.2)
                                     VStack(alignment: .leading){
                                         Text("Nicotine Concentration")
-                                            .foregroundColor(.secondary)
+                                            .font(.title2.bold())
+                                            .foregroundColor(.primary)
                                         
                                         
                                         Chart(Array(sortedFreqDebt), id: \.key){ puff in
@@ -185,8 +186,13 @@ struct HomeScreen: View {
                                         .frame(height: 400)
                                         .foregroundColor(Color.blue)
                                         .opacity(0.2)
-                                    monthlyPuffDuration()
-                                    
+                                    VStack(alignment: .leading){
+                                        Text("Puff Duration")
+                                            .font(.title2.bold())
+                                            .foregroundColor(.primary)
+                                        monthlyPuffDuration(puffTracking: puffTracking)
+                                    }
+                                    .padding()
                                 }
                             }
                         }
