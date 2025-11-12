@@ -11,7 +11,7 @@ import Combine
 struct editPuffView: View {
     @Bindable var puffData: PuffTrackingData
     @State private var numberOfPuff = ""
-    @State private var nicotineStrength = 0.0
+    @FocusState private var isKeyboardShowing: Bool
 
     var body: some View {
         Form{
@@ -32,22 +32,10 @@ struct editPuffView: View {
             Section{
                 Stepper("Puff Duration is \n  \(puffData.puffDurationInMinutes, specifier: "%.1f") Minutes", value: $puffData.puffDurationInMinutes, in: 0...100)
             }
-            Section{
-                HStack{
-                    Text("Nicotine Strength \(puffData.nicotineStrength) and \(nicotineStrength)")
-                    Spacer()
-                    Stepper("Nicotine Strength ", value: $puffData.nicotineStrength, in: 0...100)
-                        .labelsHidden()
-                    Text(".")
-                        .font(.title.bold())
-                    Stepper("Nicotine Strength ", value: $nicotineStrength, in: 0...1 ,step: 0.1)
-                        .labelsHidden()
-                }
-                Button("Verify \(puffData.nicotineStrength)"){
-                    puffData.nicotineStrength = puffData.nicotineStrength + nicotineStrength
-
-                }
-                
+            Section(header: Text("Nicotine Strength")) {
+                TextField("Nicotine Strength (0-100)", value: $puffData.nicotineStrength, formatter: numberFormatter)
+                    .keyboardType(.decimalPad)
+                    .focused($isKeyboardShowing)
             }
             Section{
                 DatePicker("Puff Date", selection: $puffData.date, displayedComponents: .date)
@@ -58,11 +46,23 @@ struct editPuffView: View {
         }
         .onAppear{
             numberOfPuff = "\(puffData.numberOfPuff)"
-            //split the decimal value of nicotine in two variable
-            nicotineStrength = Double(Int(puffData.nicotineStrength * 10) % 10)
-            puffData.nicotineStrength = (puffData.nicotineStrength * 10) / 10
-            
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    isKeyboardShowing = false
+                }
+            }
+        }
+    }
+    
+    private var numberFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimum = 0
+        formatter.maximum = 100
+        return formatter
     }
 }
 

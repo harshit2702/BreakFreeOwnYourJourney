@@ -6,25 +6,85 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct GoalsAndChallenges: View {
+    @AppStorage("background") var backgroundImage = "bg3"
+    @Query var puffTrackingData: [PuffTrackingData]
+    @StateObject var goalsViewModel = GoalsViewModel()
+    @State private var celebrate = false
+    @State private var selectedFilter = 0
+
     var body: some View {
-        ZStack{
-            LinearGradient(gradient: Gradient(colors: [Color(red: 223/255, green: 237/255, blue: 234/255),
-                                                       Color(red: 156/255, green: 202/255, blue: 191/255),
-                                                       Color(red: 143/255, green: 194/255, blue: 167/255),
-                                                       Color(red: 112/255, green: 183/255, blue: 164/255),
-                                                       Color(red: 71/255, green: 159/255, blue: 154/255),
-                                                       Color(red: 46/255, green: 124/255, blue: 137/255),
-                                                       Color(red: 35/255, green: 96/255, blue: 96/255),
-                                                       //                                                           Color(red: 14/255, green: 69/255, blue: 96/255),
-                                                       Color(red: 11/255, green: 65/255, blue: 91/255)]), startPoint: .topLeading, endPoint: .bottomTrailing)
-            .opacity(0.9)
-            VStack{
-                Text("Coming Soon")
-                    .font(.largeTitle.bold())
-                    .foregroundColor(.red)
+        NavigationView {
+            ZStack {
+                Image(backgroundImage)
+                    .resizable()
+                    .opacity(0.7)
+                    .ignoresSafeArea()
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(.black)
+                    .opacity(0.2)
+                    .ignoresSafeArea()
+                VStack {
+                    Picker("Filter", selection: $selectedFilter) {
+                        Text("In Progress").tag(0)
+                        Text("Completed").tag(1)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding()
+
+                    ForEach(goalsViewModel.goals.filter { selectedFilter == 0 ? !$0.isCompleted : $0.isCompleted }, id: \.id) { goal in
+                        NavigationLink(destination: GoalDetailView(goal: goal)) {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text(goal.title)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    Spacer()
+                                    if goal.isCompleted {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.green)
+                                    }
+                                }
+                                Text(goal.description)
+                                    .font(.subheadline)
+                                    .foregroundColor(.white.opacity(0.8))
+                                    .padding(.bottom, 5)
+                                ProgressView(value: goal.progress)
+                                    .progressViewStyle(LinearProgressViewStyle(tint: .green))
+                            }
+                            .padding()
+                            .background(Color.black.opacity(0.2))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                        }
+                    }
+                    Spacer()
+                }
+                .onAppear {
+                    goalsViewModel.updateProgress(puffData: puffTrackingData)
+                    if goalsViewModel.goals.contains(where: { $0.isCompleted }) {
+                        celebrate = true
+                    }
+                }
+                
+                if celebrate {
+                    Text("🎉 Goal Achieved! 🎉")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(15)
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                celebrate = false
+                            }
+                        }
+                }
             }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

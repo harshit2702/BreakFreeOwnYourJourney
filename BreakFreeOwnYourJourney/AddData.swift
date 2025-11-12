@@ -11,6 +11,7 @@ import Combine
 
 
 struct AddData: View {
+    @AppStorage("background") var backgroundImage = "bg3"
     @Environment(\.modelContext) var modelContext
     
     @Query var puffTracking: [PuffTrackingData]
@@ -18,10 +19,20 @@ struct AddData: View {
     @State private var numberOfPuff = ""
     
     @State private var path = [PuffTrackingData]()
+    @FocusState private var isKeyboardShowing: Bool
     
     var body: some View {
         NavigationStack(path: $path){
             ZStack{
+                Image(backgroundImage)
+                    .resizable()
+                    .opacity(0.7)
+                    .ignoresSafeArea()
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(.black)
+                    .opacity(0.2)
+                    .ignoresSafeArea()
                 List{
                     ForEach(puffTracking){puffData in
                         NavigationLink(value: puffData){
@@ -34,6 +45,7 @@ struct AddData: View {
                     }
                     .onDelete(perform: deleteItems)
                 }
+                .scrollContentBackground(.hidden)
                 .navigationDestination(for: PuffTrackingData.self) { puffData in
                         editPuffView(puffData: puffData)
                     }
@@ -42,6 +54,7 @@ struct AddData: View {
                     HStack{
                         TextField("Number of puff", text: $numberOfPuff)
                             .keyboardType(.numberPad)
+                            .focused($isKeyboardShowing)
                             .onReceive(Just(numberOfPuff)) { newValue in
                                 let filtered = newValue.filter { "0123456789".contains($0) }
                                 if filtered != newValue {
@@ -69,8 +82,8 @@ struct AddData: View {
         if numberOfPuff != ""{
             let puffData = PuffTrackingData(numberOfPuff: Int(numberOfPuff) ?? 0)
             modelContext.insert(puffData)
-            path.append(puffData)
             numberOfPuff = ""
+            isKeyboardShowing = false
         }
     }
     func deleteItems(offsets: IndexSet){

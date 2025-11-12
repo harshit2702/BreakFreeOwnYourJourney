@@ -154,8 +154,6 @@ struct puffDetails: View {
                                 RoundedRectangle(cornerRadius: 4)
                                     .foregroundStyle(Color.gray.opacity(0.12))
                             }
-                            
-
                         }
                     }
                 }

@@ -96,10 +96,12 @@ struct HomeScreen: View {
                         Image(backgroundImage)
                             .resizable()
                             .opacity(0.7)
+                            .ignoresSafeArea()
                         Rectangle()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .foregroundColor(.black)
                             .opacity(0.2)
+                            .ignoresSafeArea()
                         ScrollView {
                             VStack{
                                 Rectangle()
@@ -210,7 +212,6 @@ struct HomeScreen: View {
                             Text("Resources")
                             Image(systemName: "book.fill")
                         }
-                        .toolbar(.hidden, for: .navigationBar)
                     
                     
                     GoalsAndChallenges()
@@ -283,7 +284,7 @@ struct HomeScreen: View {
                 freqDebt = calculateNicotineFrequency(data: puffTracking)
                 sortedFreqDebt =  freqDebt.sorted(by: {$0.key < $1.key})
                 maxfrequency = freqDebt.max{ a, b in a.value < b.value  }
-                (keyFreq, valueFreq) = (maxfrequency ?? ("", -1))!
+                (keyFreq, valueFreq) = (maxfrequency ?? (" ", -1)) ?? (" ",-1)
                 var cumulative = 0.0
                 cumulativeSalesRangesForStyles = sortedFreqDebt.map {
                     let newCumulative = cumulative + Double($0.value)
@@ -291,6 +292,7 @@ struct HomeScreen: View {
                     cumulative = newCumulative
                     return result
                 }
+                todayPuffIntake = 0
                 for i in puffTracking{
                     if "\(i.date.formatted(.dateTime.year().month().day()) )" == "\(  Date.now.formatted(.dateTime.year().month().day()) )" {
                         todayPuffIntake += Double(i.numberOfPuff)
