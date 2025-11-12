@@ -36,9 +36,18 @@ struct AddData: View {
                 List{
                     ForEach(puffTracking){puffData in
                         NavigationLink(value: puffData){
-                            VStack{
-                                Text("Number Of Puff \(puffData.numberOfPuff) on \(puffData.date.formatted(date: .abbreviated, time: .omitted))")
-                                Text("Nicotine Concentration \(puffData.nicotineStrength, specifier: "%.1f")")
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text("Puff: \(puffData.numberOfPuff)")
+                                        .font(.headline)
+                                    Text("Nicotine: \(puffData.nicotineStrength, specifier: "%.1f") mg")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
+                                Spacer()
+                                Text("\(puffData.date.formatted(date: .abbreviated, time: .omitted))")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                             }
                         }
                         
@@ -49,10 +58,11 @@ struct AddData: View {
                 .navigationDestination(for: PuffTrackingData.self) { puffData in
                         editPuffView(puffData: puffData)
                     }
+                
                 VStack{
                     Spacer()
-                    HStack{
-                        TextField("Number of puff", text: $numberOfPuff)
+                    HStack {
+                        TextField("Number of puffs", text: $numberOfPuff)
                             .keyboardType(.numberPad)
                             .focused($isKeyboardShowing)
                             .onReceive(Just(numberOfPuff)) { newValue in
@@ -61,18 +71,22 @@ struct AddData: View {
                                     self.numberOfPuff = filtered
                                 }
                             }
-                            .padding()
-                        Button{
-                                    addItem()
-                        }label:{
+                        
+                        Button(action: addItem) {
                             Image(systemName: "plus")
+                                .foregroundColor(.white)
                         }
-                        .padding()
-                        .font(.title3)
+                        .padding(.horizontal)
                     }
-                    .font(.callout)
-                    .background(.yellow)
-                    .clipShape(RoundedRectangle(cornerRadius: 30.0))
+                    .padding()
+                    .background(
+                        Capsule()
+                            .fill(Color.white.opacity(0.2))
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color.white, lineWidth: 1)
+                            )
+                    )
                 }
                 .padding([.leading,.trailing])
             }

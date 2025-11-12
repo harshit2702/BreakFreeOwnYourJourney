@@ -32,9 +32,14 @@ struct HomeScreen: View {
 //    @State private var puffTracking = sampleDataMonthly
     
     
-    @State private var todayPuffIntake = 0.0
     @AppStorage("DailyPuffIntake") var DailyPuffIntake: Int = 0
     @AppStorage("BasicInfo") var isBasicInfo = false
+
+    var todayPuffIntake: Double {
+        let today = Calendar.current.startOfDay(for: Date())
+        return puffTracking.filter { Calendar.current.isDate($0.date, inSameDayAs: today) }
+                           .reduce(0) { $0 + Double($1.numberOfPuff) }
+    }
 
 
         
@@ -114,7 +119,7 @@ struct HomeScreen: View {
                                             .opacity(0.3)
                                         
                                         Circle()
-                                            .trim(from: 0, to: CGFloat((todayPuffIntake + 3) / Double(DailyPuffIntake)))
+                                            .trim(from: 0, to: CGFloat((todayPuffIntake) / Double(DailyPuffIntake)))
                                             .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                                             .foregroundColor(.pink)
                                             .rotationEffect(Angle(degrees: -90))
@@ -291,12 +296,6 @@ struct HomeScreen: View {
                     let result = (name: $0.key, range: cumulative ..< newCumulative)
                     cumulative = newCumulative
                     return result
-                }
-                todayPuffIntake = 0
-                for i in puffTracking{
-                    if "\(i.date.formatted(.dateTime.year().month().day()) )" == "\(  Date.now.formatted(.dateTime.year().month().day()) )" {
-                        todayPuffIntake += Double(i.numberOfPuff)
-                    }
                 }
             }
         }
